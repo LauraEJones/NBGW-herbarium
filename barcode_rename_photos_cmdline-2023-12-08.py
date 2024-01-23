@@ -10,7 +10,7 @@ from pyzbar.pyzbar import decode
 # If multiple images with the same barcode are encountered will append _B _C etc
 # Will skip if it can't find a barcode in the image
 
-# python3 barcode_rename_photos_cmdline-2023-12-08.py folder_name
+# python3 barcode_rename_photos_cmdline.py folder_name
 
 # Author  : Laura Jones
 ################################################################################
