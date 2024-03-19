@@ -33,6 +33,7 @@ def process_folder(folder_path):
             if decoded_data:
                 nbgw_items = [item for item in decoded_data if item.startswith("NBGW")]
                 if nbgw_items:
+                    nbgw_items = sorted(nbgw_items, key=lambda x: int(x[4:]))
                     new_base_filename = "-".join(nbgw_items) + os.path.splitext(filename)[1]
                 else:
                     new_base_filename = decoded_data[0] + os.path.splitext(filename)[1]
