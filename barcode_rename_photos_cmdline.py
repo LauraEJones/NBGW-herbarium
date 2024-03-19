@@ -7,10 +7,12 @@ from pyzbar.pyzbar import decode
 # Works through a folder of images (.jpg/.cr2/.tif)
 # Opens each image and reads in the text contained by the barcode/s in the image
 # Chooses the NBGW barcode to rename the image if multiple options present
+# If multiple NBGW barcodes are present (multi-specimen pages): 
+# will append filename with all barcodes separated by a hyphen -
 # If multiple images with the same barcode are encountered will append _B _C etc
 # Will skip if it can't find a barcode in the image
 
-# python3 barcode_rename_photos_cmdline.py folder_name
+# python3 barcode_rename_photos_cmdline-2023-12-08.py folder_name
 
 # Author  : Laura Jones
 ################################################################################
@@ -29,11 +31,11 @@ def process_folder(folder_path):
             file_path = os.path.join(folder_path, filename)
             decoded_data = decode_my_photo(file_path)
             if decoded_data:
-                nbgw_item = next((item for item in decoded_data if item.startswith("NBGW")), None)
-                selected_item = nbgw_item if nbgw_item else decoded_data[0]
-                # Create a base new filename based on the selected item
-                new_base_filename = f"{selected_item}{os.path.splitext(filename)[1]}"
-                # Check if the filename has been encountered before
+                nbgw_items = [item for item in decoded_data if item.startswith("NBGW")]
+                if nbgw_items:
+                    new_base_filename = "-".join(nbgw_items) + os.path.splitext(filename)[1]
+                else:
+                    new_base_filename = decoded_data[0] + os.path.splitext(filename)[1]
                 if new_base_filename in filename_count:
                     count = filename_count[new_base_filename]
                     count += 1
